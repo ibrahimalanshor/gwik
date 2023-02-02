@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky install"
+    "start": "node",
+    "prepare": "husky install",
+    "dev": "nodemon index.ts"
   },
   "repository": {
     "type": "git",
@@ -18,12 +19,15 @@
   },
   "homepage": "https://github.com/ibrahimalanshor/serving#readme",
   "devDependencies": {
+    "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "eslint": "^8.33.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
-    "prettier": "2.8.3"
+    "nodemon": "^2.0.20",
+    "prettier": "2.8.3",
+    "typescript": "^4.9.5"
   },
   "lint-staged": {
     "*.{ts,js}": "eslint --cache --fix",
