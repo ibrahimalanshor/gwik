@@ -27,28 +27,38 @@ function Router(path) {
   this.path = path;
 
   this.methods = {};
+  this.middlewares = [];
 }
 
 Router.prototype.build = function () {
   const route = this.router.route(this.path);
 
   for (const method in this.methods) {
-    route[method](async (req, res, next) => {
-      try {
-        const data = await this.methods[method].handle({ req, res });
+    route[method]([
+      this.middlewares,
+      async (req, res, next) => {
+        try {
+          const data = await this.methods[method].handle({ req, res });
 
-        return res.status(this.methods[method].status).json({
-          status: this.methods[method].status,
-          message: this.methods[method].message,
-          data,
-        });
-      } catch (err) {
-        next(err);
-      }
-    });
+          return res.status(this.methods[method].status).json({
+            status: this.methods[method].status,
+            message: this.methods[method].message,
+            data,
+          });
+        } catch (err) {
+          next(err);
+        }
+      },
+    ]);
   }
 
   return this.router;
+};
+
+Router.prototype.middleware = function (middlewares) {
+  this.middlewares = middlewares;
+
+  return this;
 };
 
 Router.prototype.get = createMethodHandler('get', 200, 'Ok');
