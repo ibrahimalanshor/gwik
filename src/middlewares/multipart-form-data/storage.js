@@ -1,4 +1,5 @@
 const path = require('path');
+const { unlink } = require('node:fs/promises');
 const multer = require('multer');
 const { BadRequestException } = require('../../exceptions');
 
@@ -12,16 +13,22 @@ function createStorage({ field, allowedTypes, getPath, getFilename }) {
     },
   });
 
-  function fileFilter(req, file, cb) {
-    if (
-      ![allowedTypes]
-        .map((type) => `.${type}`)
-        .includes(path.extname(file.originalname))
-    ) {
+  async function fileFilter(req, file, cb) {
+    try {
+      if (
+        ![allowedTypes]
+          .map((type) => `.${type}`)
+          .includes(path.extname(file.originalname))
+      ) {
+        await unlink(file, path);
+
+        throw null;
+      }
+
+      cb(null, true);
+    } catch (err) {
       cb(new BadRequestException());
     }
-
-    cb(null, true);
   }
 
   return multer({ storage, fileFilter }).single(field);

@@ -68,7 +68,7 @@ describe('multipart form data middleware test', () => {
           field: 'file',
           allowedTypes: 'png',
           getPath: () => path.resolve(__dirname, 'uploads'),
-          getFilename: () => 'upload.png',
+          getFilename: () => 'upload.jpg',
         })
       )
       .post(({ req }) => req.file);
