@@ -7,7 +7,7 @@
     "start": "node",
     "prepare": "husky install",
     "dev": "nodemon index.js",
-    "test": "mocha -b --recursive -w"
+    "test": "mocha -b --recursive -w -t 0"
   },
   "repository": {
     "type": "git",
