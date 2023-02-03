@@ -4,15 +4,13 @@ const expect = require('chai').expect;
 const Server = require('../../src/server/server');
 
 describe('server test', () => {
-  it('should callable', () => {
+  it('should defined and callable', () => {
     expect(Server).to.not.be.undefined;
     expect(Server).to.be.a('function');
   });
 
   it('should has express object property', () => {
-    const app = new Server();
-
-    expect(app).to.have.property('server');
+    expect(new Server()).to.have.property('server');
   });
 
   it('should has config object property', () => {
@@ -58,6 +56,8 @@ describe('server test', () => {
 
     expect(app).to.have.property('httpServer');
     expect(app.httpServer).to.be.an.instanceOf(http.Server);
+
+    // supertest
 
     app.stop();
   });
