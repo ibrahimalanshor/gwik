@@ -1,4 +1,5 @@
 const http = require('http');
+const supertest = require('supertest');
 const { describe, it } = require('mocha');
 const expect = require('chai').expect;
 const Server = require('../../src/server/server');
@@ -49,16 +50,23 @@ describe('server test', () => {
     expect(app.stop).to.be.a('function');
   });
 
-  it('should start a server', () => {
+  it('should start a server', (done) => {
     const app = new Server();
 
-    app.listen();
+    app.listen(() => {});
 
     expect(app).to.have.property('httpServer');
     expect(app.httpServer).to.be.an.instanceOf(http.Server);
 
-    // supertest
+    supertest('http://localhost:4000')
+      .get('/')
+      .expect(404)
+      .end((err) => {
+        app.stop();
 
-    app.stop();
+        if (err) return done(err);
+
+        done();
+      });
   });
 });
