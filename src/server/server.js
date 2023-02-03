@@ -3,6 +3,7 @@ const {
   isObject,
   isFunction,
 } = require('../../lib/helpers/check-types.helper.js');
+const { HttpException } = require('../exceptions');
 
 function Server(config) {
   this.server = express();
@@ -20,7 +21,26 @@ Server.prototype.setConfig = function (config) {
   }
 };
 
+Server.prototype.setErrorHandle = function () {
+  this.server.use((err, req, res, next) => {
+    if (err instanceof HttpException) {
+      return res.status(err.status).json({
+        status: err.status,
+        message: err.message,
+        errors: err.errors,
+      });
+    }
+
+    return res.status(500).json({
+      status: 500,
+      message: 'Internal Server Error',
+    });
+  });
+};
+
 Server.prototype.listen = function (cb) {
+  this.setErrorHandle();
+
   const port = this.config.port;
 
   this.httpServer = this.server.listen(port, () => {
@@ -36,8 +56,8 @@ Server.prototype.stop = function () {
   this.httpServer.close();
 };
 
-Server.prototype.addRoute = function (path, handle) {
-  this.server.use(path, handle);
+Server.prototype.addRoute = function (route) {
+  this.server.use(route);
 };
 
 module.exports = Server;
