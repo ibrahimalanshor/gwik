@@ -36,4 +36,6 @@ Server.prototype.stop = function () {
   this.httpServer.close();
 };
 
+Server.prototype.addRoute = function () {};
+
 module.exports = Server;

@@ -50,6 +50,13 @@ describe('server test', () => {
     expect(app.stop).to.be.a('function');
   });
 
+  it('should has callable add route method', () => {
+    const app = new Server();
+
+    expect(app).to.have.property('addRoute');
+    expect(app.addRoute).to.be.a('function');
+  });
+
   it('should start a server', (done) => {
     const app = new Server();
 
