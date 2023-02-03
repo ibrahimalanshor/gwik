@@ -7,7 +7,7 @@
     "start": "node",
     "prepare": "husky install",
     "dev": "nodemon index.js",
-    "test": "mocha -b --recursive -w -t 0"
+    "test": "mocha --recursive -w -t 0"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,7 @@
     "*.{js,css,md}": "prettier --write"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-validator": "^6.14.3"
   }
 }
