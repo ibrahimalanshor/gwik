@@ -12,6 +12,9 @@ function Server(config) {
     port: 4000,
   };
 
+  this.server.use(express.urlencoded({ extended: true }));
+  this.server.use(express.json());
+
   this.setConfig(config);
 }
 
