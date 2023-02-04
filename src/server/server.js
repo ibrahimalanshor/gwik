@@ -13,6 +13,7 @@ function Server(config) {
   this.httpServer = null;
   this.config = {
     port: 4000,
+    logging: true,
     middleware: {
       cors: {},
       helmet: {},
@@ -33,17 +34,21 @@ Server.prototype.setMiddleware = function () {
 
   this.server.use(cors(this.config.middleware.cors));
   this.server.use(helmet(this.config.middleware.helmet));
-  this.server.use(
-    morgan(
-      this.config.middleware.morgan.format,
-      this.config.middleware.morgan.options
-    )
-  );
+
+  if (this.config.logging) {
+    this.server.use(
+      morgan(
+        this.config.middleware.morgan.format,
+        this.config.middleware.morgan.options
+      )
+    );
+  }
 };
 
 Server.prototype.setConfig = function (config) {
   if (config && isObject(config)) {
     this.config.port = config.port || this.config.port;
+    this.config.logging = !!config.logging ?? this.config.logging;
 
     this.config.middleware.cors = config.cors || this.config.middleware.cors;
     this.config.middleware.helmet =
@@ -76,10 +81,12 @@ Server.prototype.listen = function (cb) {
   const port = this.config.port;
 
   this.httpServer = this.server.listen(port, () => {
-    if (cb && isFunction(cb)) {
-      cb(port);
-    } else {
-      console.log(`server listen at ${port}`);
+    if (this.config.logging) {
+      if (cb && isFunction(cb)) {
+        cb(port);
+      } else {
+        console.log(`server listen at ${port}`);
+      }
     }
   });
 };

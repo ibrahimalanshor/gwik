@@ -17,10 +17,11 @@ describe('server static test', () => {
   it('should return static file', async () => {
     const server = new Server({
       port: config.server.port,
+      logging: false,
     });
 
     server.addStaticRoute('/public', path.resolve(__dirname, 'public'));
-    server.listen(() => {});
+    server.listen();
 
     try {
       await supertest(config.server.url)

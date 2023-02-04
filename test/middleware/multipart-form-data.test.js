@@ -30,6 +30,7 @@ describe('multipart form data middleware test', () => {
   it('should return 400 missing file field', async () => {
     const server = new Server({
       port: config.server.port,
+      logging: false,
     });
     const router = new Router('/');
 
@@ -45,7 +46,7 @@ describe('multipart form data middleware test', () => {
       .post(({ req }) => req.file);
 
     server.addRoute(router.build());
-    server.listen(() => {});
+    server.listen();
 
     try {
       const res = await supertest(config.server.url).post('/').expect(400);
@@ -63,6 +64,7 @@ describe('multipart form data middleware test', () => {
   it('should return 400 invalid file type', async () => {
     const server = new Server({
       port: config.server.port,
+      logging: false,
     });
     const router = new Router('/');
 
@@ -78,7 +80,7 @@ describe('multipart form data middleware test', () => {
       .post(({ req }) => req.file);
 
     server.addRoute(router.build());
-    server.listen(() => {});
+    server.listen();
 
     try {
       const res = await supertest(config.server.url)
@@ -105,6 +107,7 @@ describe('multipart form data middleware test', () => {
   it('should return 200 success upload file', async () => {
     const server = new Server({
       port: config.server.port,
+      logging: false,
     });
     const router = new Router('/');
 
@@ -120,7 +123,7 @@ describe('multipart form data middleware test', () => {
       .post(({ req }) => req.file);
 
     server.addRoute(router.build());
-    server.listen(() => {});
+    server.listen();
 
     try {
       const res = await supertest(config.server.url)
