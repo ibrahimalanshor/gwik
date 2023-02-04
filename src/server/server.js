@@ -63,4 +63,8 @@ Server.prototype.addRoute = function (route) {
   this.server.use(route);
 };
 
+Server.prototype.addStaticRoute = function (path, rootDir) {
+  this.server.use(path, express.static(rootDir));
+};
+
 module.exports = Server;
