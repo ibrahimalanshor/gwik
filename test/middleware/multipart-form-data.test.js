@@ -7,6 +7,7 @@ const {
 } = require('../../src/middlewares/multipart-form-data/multipart-form-data.middleware');
 const Router = require('../../src/router/router');
 const Server = require('../../src/server/server');
+const { checkFileExists } = require('../../lib/helpers/fs.helper');
 
 describe('multipart form data middleware test', () => {
   it('should be defined and callable', () => {
@@ -88,7 +89,11 @@ describe('multipart form data middleware test', () => {
       expect(res.body).to.have.property('message');
       expect(res.body.message).to.equal('Bad Request');
 
-      // check file uploaded must be deleted
+      const uploadedFileExists = await checkFileExists(
+        path.resolve(__dirname, 'uploads', 'upload.jpg')
+      );
+
+      expect(uploadedFileExists).to.be.false;
     } finally {
       server.stop();
     }
@@ -128,7 +133,11 @@ describe('multipart form data middleware test', () => {
       expect(res.body.data).to.have.property('filename');
       expect(res.body.data).to.have.property('path');
 
-      // check file uploaded is exists
+      const uploadedFileExists = await checkFileExists(
+        path.resolve(__dirname, 'uploads', 'upload.png')
+      );
+
+      expect(uploadedFileExists).to.be.true;
     } finally {
       server.stop();
     }
