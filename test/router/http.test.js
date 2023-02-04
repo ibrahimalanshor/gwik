@@ -1,13 +1,16 @@
 const { describe, it } = require('mocha');
 const { expect } = require('chai');
 const supertest = require('supertest');
+const config = require('../config/config');
 const Server = require('../../src/server/server');
 const Router = require('../../src/router/router');
 const { UnauthorizedException } = require('../../src/exceptions');
 
 describe('http router test', () => {
   it('should add a route to the server', async () => {
-    const server = new Server();
+    const server = new Server({
+      port: config.server.port,
+    });
     const router = new Router('/test');
 
     router.get(() => 'test');
@@ -16,9 +19,7 @@ describe('http router test', () => {
     server.listen(() => {});
 
     try {
-      const res = await supertest('http://localhost:4000')
-        .get('/test')
-        .expect(200);
+      const res = await supertest(config.server.url).get('/test').expect(200);
 
       expect(res).to.be.a('object');
       expect(res).to.have.property('body');
@@ -32,7 +33,9 @@ describe('http router test', () => {
   });
 
   it('should add a async route to the server', async () => {
-    const server = new Server();
+    const server = new Server({
+      port: config.server.port,
+    });
     const router = new Router('/test');
 
     router.post(async () => {
@@ -45,9 +48,7 @@ describe('http router test', () => {
     server.listen(() => {});
 
     try {
-      const res = await supertest('http://localhost:4000')
-        .post('/test')
-        .expect(201);
+      const res = await supertest(config.server.url).post('/test').expect(201);
 
       expect(res).to.be.a('object');
       expect(res).to.have.property('body');
@@ -61,7 +62,9 @@ describe('http router test', () => {
   });
 
   it('should add a route with custom response status code to the server', async () => {
-    const server = new Server();
+    const server = new Server({
+      port: config.server.port,
+    });
     const router = new Router('/test');
 
     router.get(() => 'No Content', 204);
@@ -70,14 +73,16 @@ describe('http router test', () => {
     server.listen(() => {});
 
     try {
-      await supertest('http://localhost:4000').get('/test').expect(204);
+      await supertest(config.server.url).get('/test').expect(204);
     } finally {
       server.stop();
     }
   });
 
   it('should response 500 http error code', async () => {
-    const server = new Server();
+    const server = new Server({
+      port: config.server.port,
+    });
     const router = new Router('/test');
 
     router.get(() => undefinedFunction());
@@ -86,9 +91,7 @@ describe('http router test', () => {
     server.listen(() => {});
 
     try {
-      const res = await supertest('http://localhost:4000')
-        .get('/test')
-        .expect(500);
+      const res = await supertest(config.server.url).get('/test').expect(500);
 
       expect(res).to.be.a('object');
       expect(res).to.have.property('body');
@@ -101,7 +104,9 @@ describe('http router test', () => {
   });
 
   it('should response 401 http error code', async () => {
-    const server = new Server();
+    const server = new Server({
+      port: config.server.port,
+    });
     const router = new Router('/test');
 
     router.get(() => {
@@ -112,9 +117,7 @@ describe('http router test', () => {
     server.listen(() => {});
 
     try {
-      const res = await supertest('http://localhost:4000')
-        .get('/test')
-        .expect(401);
+      const res = await supertest(config.server.url).get('/test').expect(401);
 
       expect(res).to.be.a('object');
       expect(res).to.have.property('body');

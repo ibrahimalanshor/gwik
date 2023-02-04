@@ -2,6 +2,7 @@ const { expect } = require('chai');
 const { describe, it } = require('mocha');
 const path = require('path');
 const supertest = require('supertest');
+const config = require('../config/config');
 const Router = require('../../src/router/router');
 const Server = require('../../src/server/server');
 
@@ -14,13 +15,15 @@ describe('server static test', () => {
   });
 
   it('should return static file', async () => {
-    const server = new Server();
+    const server = new Server({
+      port: config.server.port,
+    });
 
     server.addStaticRoute('/public', path.resolve(__dirname, 'public'));
     server.listen(() => {});
 
     try {
-      await supertest('http://localhost:4000')
+      await supertest(config.server.url)
         .get('/public/image.png')
         .expect(200)
         .expect('Content-Type', 'image/png');

@@ -1,6 +1,7 @@
 const { body } = require('express-validator');
 const { expect } = require('chai');
 const { describe } = require('mocha');
+const config = require('../config/config');
 const Server = require('../../src/server/server');
 const Router = require('../../src/router/router');
 const {
@@ -35,7 +36,9 @@ describe('body validation middleware test', () => {
   });
 
   it('should return 422', async () => {
-    const server = new Server();
+    const server = new Server({
+      port: config.server.port,
+    });
     const router = new Router('/');
 
     router
@@ -47,9 +50,7 @@ describe('body validation middleware test', () => {
     server.listen(() => {});
 
     try {
-      const res = await supertest('http://localhost:4000')
-        .post('/')
-        .expect(422);
+      const res = await supertest(config.server.url).post('/').expect(422);
 
       expect(res).to.have.property('body');
       expect(res.body).to.be.a('object');
@@ -64,7 +65,9 @@ describe('body validation middleware test', () => {
   });
 
   it('should return matched data from validation result', async () => {
-    const server = new Server();
+    const server = new Server({
+      port: config.server.port,
+    });
     const router = new Router('/');
 
     router
@@ -76,7 +79,7 @@ describe('body validation middleware test', () => {
     server.listen(() => {});
 
     try {
-      const res = await supertest('http://localhost:4000')
+      const res = await supertest(config.server.url)
         .post('/')
         .send({ name: 'test', invalid: 'test' })
         .expect(201);

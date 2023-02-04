@@ -2,6 +2,7 @@ const { expect } = require('chai');
 const { describe, it } = require('mocha');
 const supertest = require('supertest');
 const path = require('path');
+const config = require('../config/config');
 const {
   createMultipartFormDataMiddleware,
 } = require('../../src/middlewares/multipart-form-data/multipart-form-data.middleware');
@@ -27,7 +28,9 @@ describe('multipart form data middleware test', () => {
   });
 
   it('should return 400 missing file field', async () => {
-    const server = new Server();
+    const server = new Server({
+      port: config.server.port,
+    });
     const router = new Router('/');
 
     router
@@ -45,9 +48,7 @@ describe('multipart form data middleware test', () => {
     server.listen(() => {});
 
     try {
-      const res = await supertest('http://localhost:4000')
-        .post('/')
-        .expect(400);
+      const res = await supertest(config.server.url).post('/').expect(400);
 
       expect(res.body).to.be.a('object');
       expect(res.body).to.have.property('status');
@@ -60,7 +61,9 @@ describe('multipart form data middleware test', () => {
   });
 
   it('should return 400 invalid file type', async () => {
-    const server = new Server();
+    const server = new Server({
+      port: config.server.port,
+    });
     const router = new Router('/');
 
     router
@@ -78,7 +81,7 @@ describe('multipart form data middleware test', () => {
     server.listen(() => {});
 
     try {
-      const res = await supertest('http://localhost:4000')
+      const res = await supertest(config.server.url)
         .post('/')
         .attach('file', __dirname + '/resources/upload.jpg')
         .expect(400);
@@ -100,7 +103,9 @@ describe('multipart form data middleware test', () => {
   });
 
   it('should return 200 success upload file', async () => {
-    const server = new Server();
+    const server = new Server({
+      port: config.server.port,
+    });
     const router = new Router('/');
 
     router
@@ -118,7 +123,7 @@ describe('multipart form data middleware test', () => {
     server.listen(() => {});
 
     try {
-      const res = await supertest('http://localhost:4000')
+      const res = await supertest(config.server.url)
         .post('/')
         .attach('file', __dirname + '/resources/upload.png')
         .expect(201);
