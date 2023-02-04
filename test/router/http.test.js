@@ -10,13 +10,14 @@ describe('http router test', () => {
   it('should add a route to the server', async () => {
     const server = new Server({
       port: config.server.port,
+      logging: false,
     });
     const router = new Router('/test');
 
     router.get(() => 'test');
 
     server.addRoute(router.build());
-    server.listen(() => {});
+    server.listen();
 
     try {
       const res = await supertest(config.server.url).get('/test').expect(200);
@@ -35,6 +36,7 @@ describe('http router test', () => {
   it('should add a async route to the server', async () => {
     const server = new Server({
       port: config.server.port,
+      logging: false,
     });
     const router = new Router('/test');
 
@@ -45,7 +47,7 @@ describe('http router test', () => {
     });
 
     server.addRoute(router.build());
-    server.listen(() => {});
+    server.listen();
 
     try {
       const res = await supertest(config.server.url).post('/test').expect(201);
@@ -64,13 +66,14 @@ describe('http router test', () => {
   it('should add a route with custom response status code to the server', async () => {
     const server = new Server({
       port: config.server.port,
+      logging: false,
     });
     const router = new Router('/test');
 
     router.get(() => 'No Content', 204);
 
     server.addRoute(router.build());
-    server.listen(() => {});
+    server.listen();
 
     try {
       await supertest(config.server.url).get('/test').expect(204);
@@ -82,13 +85,14 @@ describe('http router test', () => {
   it('should response 500 http error code', async () => {
     const server = new Server({
       port: config.server.port,
+      logging: false,
     });
     const router = new Router('/test');
 
     router.get(() => undefinedFunction());
 
     server.addRoute(router.build());
-    server.listen(() => {});
+    server.listen();
 
     try {
       const res = await supertest(config.server.url).get('/test').expect(500);
@@ -106,6 +110,7 @@ describe('http router test', () => {
   it('should response 401 http error code', async () => {
     const server = new Server({
       port: config.server.port,
+      logging: false,
     });
     const router = new Router('/test');
 
@@ -114,7 +119,7 @@ describe('http router test', () => {
     });
 
     server.addRoute(router.build());
-    server.listen(() => {});
+    server.listen();
 
     try {
       const res = await supertest(config.server.url).get('/test').expect(401);

@@ -61,9 +61,10 @@ describe('server test', () => {
   it('should start a server', async () => {
     const app = new Server({
       port: config.server.port,
+      logging: false,
     });
 
-    app.listen(() => {});
+    app.listen();
 
     expect(app).to.have.property('httpServer');
     expect(app.httpServer).to.be.an.instanceOf(http.Server);

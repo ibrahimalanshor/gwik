@@ -38,6 +38,7 @@ describe('body validation middleware test', () => {
   it('should return 422', async () => {
     const server = new Server({
       port: config.server.port,
+      logging: false,
     });
     const router = new Router('/');
 
@@ -47,7 +48,7 @@ describe('body validation middleware test', () => {
 
     server.addRoute(router.build());
 
-    server.listen(() => {});
+    server.listen();
 
     try {
       const res = await supertest(config.server.url).post('/').expect(422);
@@ -67,6 +68,7 @@ describe('body validation middleware test', () => {
   it('should return matched data from validation result', async () => {
     const server = new Server({
       port: config.server.port,
+      logging: false,
     });
     const router = new Router('/');
 
@@ -76,7 +78,7 @@ describe('body validation middleware test', () => {
 
     server.addRoute(router.build());
 
-    server.listen(() => {});
+    server.listen();
 
     try {
       const res = await supertest(config.server.url)
