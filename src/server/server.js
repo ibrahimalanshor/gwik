@@ -1,4 +1,7 @@
 const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
+const helmet = require('helmet');
 const {
   isObject,
   isFunction,
@@ -10,17 +13,43 @@ function Server(config) {
   this.httpServer = null;
   this.config = {
     port: 4000,
+    middleware: {
+      cors: {},
+      helmet: {},
+      morgan: {
+        format: 'tiny',
+        options: {},
+      },
+    },
   };
 
+  this.setConfig(config);
+  this.setMiddleware();
+}
+
+Server.prototype.setMiddleware = function () {
   this.server.use(express.urlencoded({ extended: true }));
   this.server.use(express.json());
 
-  this.setConfig(config);
-}
+  this.server.use(cors(this.config.middleware.cors));
+  this.server.use(helmet(this.config.middleware.helmet));
+  this.server.use(
+    morgan(
+      this.config.middleware.morgan.format,
+      this.config.middleware.morgan.options
+    )
+  );
+};
 
 Server.prototype.setConfig = function (config) {
   if (config && isObject(config)) {
-    this.config.port = config.port;
+    this.config.port = config.port || this.config.port;
+
+    this.config.middleware.cors = config.cors || this.config.middleware.cors;
+    this.config.middleware.helmet =
+      config.helmet || this.config.middleware.helmet;
+    this.config.middleware.morgan =
+      config.morgan || this.config.middleware.morgan;
   }
 };
 
