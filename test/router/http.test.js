@@ -5,7 +5,7 @@ const Server = require('../../src/server/server');
 const Router = require('../../src/router/router');
 const { UnauthorizedException } = require('../../src/exceptions');
 
-describe('server router test', () => {
+describe('http router test', () => {
   it('should add a route to the server', async () => {
     const server = new Server();
     const router = new Router('/test');
