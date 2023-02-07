@@ -2,11 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const T9n = require('t9n');
 const {
   isObject,
   isFunction,
 } = require('../../lib/helpers/check-types.helper.js');
 const { HttpException } = require('../exceptions');
+const { t9nMiddleware } = require('../middlewares/t9n/t9n.middleware');
 
 function Server(config) {
   this.server = express();
@@ -22,11 +24,48 @@ function Server(config) {
         options: {},
       },
     },
+    t9n: {
+      locale: 'en',
+      fallbackLocale: 'en',
+      messages: {},
+    },
   };
 
   this.setConfig(config);
+  this.setT9n();
   this.setMiddleware();
 }
+
+Server.prototype.setConfig = function (config) {
+  if (config && isObject(config)) {
+    this.config.port = config.port || this.config.port;
+    this.config.logging = !!config.logging ?? this.config.logging;
+
+    this.config.middleware.cors = config.cors || this.config.middleware.cors;
+    this.config.middleware.helmet =
+      config.helmet || this.config.middleware.helmet;
+    this.config.middleware.morgan =
+      config.morgan || this.config.middleware.morgan;
+
+    if (isObject(config.t9n)) {
+      this.config.t9n.locale = config.t9n.locale || this.config.t9n.locale;
+      this.config.t9n.fallbackLocale =
+        config.t9n.fallbackLocale || this.config.t9n.fallbackLocale;
+      this.config.t9n.messages =
+        config.t9n.messages || this.config.t9n.messages;
+    }
+  }
+};
+
+Server.prototype.setT9n = function () {
+  const t9n = new T9n({
+    locale: this.config.t9n.locale,
+    fallbackLocale: this.config.t9n.fallbackLocale,
+    messages: this.config.t9n.messages,
+  });
+
+  this.server.set('t9n', t9n);
+};
 
 Server.prototype.setMiddleware = function () {
   this.server.use(express.urlencoded({ extended: true }));
@@ -43,19 +82,8 @@ Server.prototype.setMiddleware = function () {
       )
     );
   }
-};
 
-Server.prototype.setConfig = function (config) {
-  if (config && isObject(config)) {
-    this.config.port = config.port || this.config.port;
-    this.config.logging = !!config.logging ?? this.config.logging;
-
-    this.config.middleware.cors = config.cors || this.config.middleware.cors;
-    this.config.middleware.helmet =
-      config.helmet || this.config.middleware.helmet;
-    this.config.middleware.morgan =
-      config.morgan || this.config.middleware.morgan;
-  }
+  this.server.use(t9nMiddleware);
 };
 
 Server.prototype.setErrorHandle = function () {
@@ -100,7 +128,13 @@ Server.prototype.stop = function () {
 };
 
 Server.prototype.addRoute = function (route) {
-  this.server.use(route);
+  if (Array.isArray(route)) {
+    route.forEach((item) => {
+      this.server.use(item);
+    });
+  } else {
+    this.server.use(route);
+  }
 };
 
 Server.prototype.addStaticRoute = function (path, rootDir) {

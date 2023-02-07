@@ -38,7 +38,11 @@ Router.prototype.build = function () {
       this.middlewares,
       async (req, res, next) => {
         try {
-          const data = await this.methods[method].handle({ req, res });
+          const data = await this.methods[method].handle({
+            req,
+            res,
+            t: req.t,
+          });
 
           return res.status(this.methods[method].status).json({
             status: this.methods[method].status,
