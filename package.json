@@ -1,7 +1,7 @@
 {
-  "name": "serving",
+  "name": "gwik",
   "version": "0.0.0",
-  "description": "",
+  "description": "Gwik",
   "main": "index.js",
   "scripts": {
     "start": "node",
@@ -13,12 +13,18 @@
     "type": "git",
     "url": "git+https://github.com/ibrahimalanshor/serving.git"
   },
-  "author": "",
+  "author": "Ibrahim Al Anshor",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ibrahimalanshor/serving/issues"
   },
   "homepage": "https://github.com/ibrahimalanshor/serving#readme",
+  "files": [
+    "README.md",
+    "index.js",
+    "src/",
+    "lib"
+  ],
   "devDependencies": {
     "chai": "^4.3.7",
     "dotenv": "^16.0.3",
