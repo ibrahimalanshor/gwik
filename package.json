@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ibrahimalanshor/serving.git"
+    "url": "git+https://github.com/ibrahimalanshor/gwik.git"
   },
   "author": "Ibrahim Al Anshor",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ibrahimalanshor/serving/issues"
+    "url": "https://github.com/ibrahimalanshor/gwik/issues"
   },
-  "homepage": "https://github.com/ibrahimalanshor/serving#readme",
+  "homepage": "https://github.com/ibrahimalanshor/gwik#readme",
   "files": [
     "README.md",
     "index.js",
