@@ -1,0 +1,12 @@
+{
+    "en": {
+        "hello": "Hello",
+        "greet": "Good morning {name}",
+        "action": {
+            "save": "Save"
+        }
+    },
+    "id": {
+        "hello": "Halo"
+    }
+}
