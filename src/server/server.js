@@ -39,7 +39,7 @@ function Server(config) {
 Server.prototype.setConfig = function (config) {
   if (config && isObject(config)) {
     this.config.port = config.port || this.config.port;
-    this.config.logging = !!config.logging ?? this.config.logging;
+    this.config.logging = config.logging ?? this.config.logging;
 
     this.config.middleware.cors = config.cors || this.config.middleware.cors;
     this.config.middleware.helmet =
