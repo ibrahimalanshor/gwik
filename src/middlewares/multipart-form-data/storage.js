@@ -16,7 +16,7 @@ function createStorage({ field, allowedTypes, getPath, getFilename }) {
   async function fileFilter(req, file, cb) {
     try {
       if (
-        ![allowedTypes]
+        !allowedTypes
           .map((type) => `.${type}`)
           .includes(path.extname(file.originalname))
       ) {
