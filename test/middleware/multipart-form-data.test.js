@@ -72,7 +72,7 @@ describe('multipart form data middleware test', () => {
       .middleware(
         createMultipartFormDataMiddleware({
           field: 'file',
-          allowedTypes: 'png',
+          allowedTypes: ['png'],
           getPath: () => path.resolve(__dirname, 'uploads'),
           getFilename: () => 'upload.jpg',
         })
@@ -115,7 +115,7 @@ describe('multipart form data middleware test', () => {
       .middleware(
         createMultipartFormDataMiddleware({
           field: 'file',
-          allowedTypes: 'png',
+          allowedTypes: ['png', 'jpg'],
           getPath: () => path.resolve(__dirname, 'uploads'),
           getFilename: () => 'upload.png',
         })
