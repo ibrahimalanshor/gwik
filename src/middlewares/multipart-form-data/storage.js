@@ -20,7 +20,7 @@ function createStorage({ field, allowedTypes, getPath, getFilename }) {
           .map((type) => `.${type}`)
           .includes(path.extname(file.originalname))
       ) {
-        await unlink(file, path);
+        await unlink(path.resolve(getPath(), file.originalname));
 
         throw null;
       }
