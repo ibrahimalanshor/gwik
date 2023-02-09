@@ -1,4 +1,4 @@
-const { validationResult, matchedData } = require('express-validator');
+const { validationResult, matchedData, body } = require('express-validator');
 const { UnprocessableEntityException } = require('../../exceptions');
 
 function bodyValidationMiddleware(req, res, next) {
@@ -17,4 +17,8 @@ function createBodyValidationMiddleware(schema) {
   return [schema, bodyValidationMiddleware];
 }
 
-module.exports = { bodyValidationMiddleware, createBodyValidationMiddleware };
+module.exports = {
+  body,
+  bodyValidationMiddleware,
+  createBodyValidationMiddleware,
+};
