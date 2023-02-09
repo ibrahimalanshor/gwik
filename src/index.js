@@ -1,6 +1,7 @@
 const Exceptions = require('./exceptions');
 const {
   createBodyValidationMiddleware,
+  body,
 } = require('./middlewares/body-validation/body-validation.middleware');
 const {
   createMultipartFormDataMiddleware,
@@ -19,3 +20,4 @@ exports.UnprocessableEntityException = Exceptions.UnprocessableEntityException;
 
 exports.createBodyValidationMiddleware = createBodyValidationMiddleware;
 exports.createMultipartFormDataMiddleware = createMultipartFormDataMiddleware;
+exports.body = body;

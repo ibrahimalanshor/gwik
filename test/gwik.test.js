@@ -37,6 +37,10 @@ describe('gwik test', () => {
     expect(gwik).to.have.property('createBodyValidationMiddleware');
   });
 
+  it('should exports body schema', () => {
+    expect(gwik).to.have.property('body');
+  });
+
   it('should exports multipart form data middleware', () => {
     expect(gwik).to.have.property('createMultipartFormDataMiddleware');
   });
