@@ -1,4 +1,3 @@
-const { body } = require('express-validator');
 const { expect } = require('chai');
 const { describe } = require('mocha');
 const config = require('../config/config');
@@ -6,6 +5,7 @@ const Server = require('../../src/server/server');
 const Router = require('../../src/router/router');
 const {
   createBodyValidationMiddleware,
+  body,
 } = require('../../src/middlewares/body-validation/body-validation.middleware');
 const supertest = require('supertest');
 
