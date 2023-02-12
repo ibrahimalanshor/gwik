@@ -3,8 +3,8 @@ const {
   extendPrototype,
 } = require('../../lib/helpers/extend-prototype.helper');
 
-function UnauthorizedException(errors = {}) {
-  HttpException.call(this, 401, 'Unauthorized', errors);
+function UnauthorizedException(errors = {}, message = '') {
+  HttpException.call(this, 401, errors, message);
 }
 
 extendPrototype(UnauthorizedException, HttpException);
