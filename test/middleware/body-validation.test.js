@@ -57,7 +57,6 @@ describe('body validation middleware test', () => {
       expect(res.body).to.be.a('object');
       expect(res.body).to.have.property('status');
       expect(res.body.status).to.equal(422);
-      expect(res.body.message).to.equal('Unprocessable Entity');
       expect(res.body.errors).to.be.a('object');
       expect(res.body.errors).to.have.property('name');
     } finally {

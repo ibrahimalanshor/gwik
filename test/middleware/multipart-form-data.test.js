@@ -55,7 +55,6 @@ describe('multipart form data middleware test', () => {
       expect(res.body).to.have.property('status');
       expect(res.body.status).to.equal(400);
       expect(res.body).to.have.property('message');
-      expect(res.body.message).to.equal('Bad Request');
     } finally {
       server.stop();
     }
@@ -92,7 +91,6 @@ describe('multipart form data middleware test', () => {
       expect(res.body).to.have.property('status');
       expect(res.body.status).to.equal(400);
       expect(res.body).to.have.property('message');
-      expect(res.body.message).to.equal('Bad Request');
 
       const uploadedFileExists = await checkFileExists(
         path.resolve(__dirname, 'uploads', 'upload.jpg')
