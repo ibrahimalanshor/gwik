@@ -9,7 +9,19 @@ function bodyValidationMiddleware(req, res, next) {
 
     next();
   } catch (err) {
-    next(new UnprocessableEntityException(err.mapped()));
+    next(
+      new UnprocessableEntityException(
+        Object.fromEntries(
+          Object.entries(err.mapped()).map(([path, error]) => [
+            path,
+            {
+              ...error,
+              msg: req.t.translate(error.msg, { field: error.param }),
+            },
+          ])
+        )
+      )
+    );
   }
 }
 
