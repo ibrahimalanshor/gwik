@@ -6,7 +6,7 @@ function HttpException(status = 400, errors = {}, message = '') {
   this.rawMessage = false;
 }
 
-HttpException.prototype.useRawMessage = function () {
+HttpException.prototype.useRaw = function () {
   this.rawMessage = true;
 
   return this;
