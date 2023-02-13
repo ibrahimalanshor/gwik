@@ -3,8 +3,8 @@ const {
   extendPrototype,
 } = require('../../lib/helpers/extend-prototype.helper');
 
-function Conflict(errors = {}) {
-  HttpException.call(this, 409, 'Conflict', errors);
+function Conflict(errors = {}, message = '') {
+  HttpException.call(this, 409, errors, message);
 }
 
 extendPrototype(Conflict, HttpException);

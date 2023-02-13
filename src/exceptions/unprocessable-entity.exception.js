@@ -3,8 +3,8 @@ const {
   extendPrototype,
 } = require('../../lib/helpers/extend-prototype.helper');
 
-function UnprocessableEntity(errors = {}) {
-  HttpException.call(this, 422, 'Unprocessable Entity', errors);
+function UnprocessableEntity(errors = {}, message = '') {
+  HttpException.call(this, 422, errors, message);
 }
 
 extendPrototype(UnprocessableEntity, HttpException);

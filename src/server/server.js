@@ -27,7 +27,9 @@ function Server(config) {
     t9n: {
       locale: 'en',
       fallbackLocale: 'en',
-      messages: {},
+      messages: {
+        en: {},
+      },
     },
   };
 
@@ -91,7 +93,11 @@ Server.prototype.setErrorHandle = function () {
     if (err instanceof HttpException) {
       return res.status(err.status).json({
         status: err.status,
-        message: err.message,
+        message: err.rawMessage
+          ? err.message
+          : err.message
+          ? req.t.translate(err.message)
+          : req.t.translate(`http.${err.status}`),
         errors: err.errors,
       });
     }
@@ -102,7 +108,7 @@ Server.prototype.setErrorHandle = function () {
 
     return res.status(500).json({
       status: 500,
-      message: 'Internal Server Error',
+      message: req.t.translate('http.500'),
     });
   });
 };

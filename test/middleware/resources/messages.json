@@ -1,0 +1,7 @@
+{
+    "en": {
+        "validation": {
+            "exists": "{field} must be exists"
+        }
+    }
+}

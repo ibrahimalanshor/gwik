@@ -8,6 +8,7 @@ const {
   body,
 } = require('../../src/middlewares/body-validation/body-validation.middleware');
 const supertest = require('supertest');
+const messages = require('./resources/messages.json');
 
 describe('body validation middleware test', () => {
   it('should defined and callable', () => {
@@ -39,11 +40,18 @@ describe('body validation middleware test', () => {
     const server = new Server({
       port: config.server.port,
       logging: false,
+      t9n: {
+        messages,
+      },
     });
     const router = new Router('/');
 
     router
-      .middleware(createBodyValidationMiddleware([body('name').exists()]))
+      .middleware(
+        createBodyValidationMiddleware([
+          body('name').exists().withMessage('validation.exists'),
+        ])
+      )
       .post(({ req }) => req.body);
 
     server.addRoute(router.build());
@@ -57,9 +65,13 @@ describe('body validation middleware test', () => {
       expect(res.body).to.be.a('object');
       expect(res.body).to.have.property('status');
       expect(res.body.status).to.equal(422);
-      expect(res.body.message).to.equal('Unprocessable Entity');
       expect(res.body.errors).to.be.a('object');
       expect(res.body.errors).to.have.property('name');
+      expect(res.body.errors.name).to.be.a('object');
+      expect(res.body.errors.name).to.have.property('msg');
+      expect(res.body.errors.name.msg).to.equal(
+        messages.en.validation.exists.replace('{field}', 'name')
+      );
     } finally {
       server.stop();
     }

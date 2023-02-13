@@ -3,8 +3,8 @@ const {
   extendPrototype,
 } = require('../../lib/helpers/extend-prototype.helper');
 
-function Forbidden(errors = {}) {
-  HttpException.call(this, 403, 'Forbidden', errors);
+function Forbidden(errors = {}, message = '') {
+  HttpException.call(this, 403, errors, message);
 }
 
 extendPrototype(Forbidden, HttpException);
