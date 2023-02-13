@@ -93,12 +93,11 @@ Server.prototype.setErrorHandle = function () {
     if (err instanceof HttpException) {
       return res.status(err.status).json({
         status: err.status,
-        name: req.t.translate(`http.${err.status}`),
         message: err.rawMessage
           ? err.message
           : err.message
           ? req.t.translate(err.message)
-          : '',
+          : req.t.translate(`http.${err.status}`),
         errors: err.errors,
       });
     }
