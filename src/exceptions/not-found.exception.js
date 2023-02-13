@@ -3,8 +3,8 @@ const {
   extendPrototype,
 } = require('../../lib/helpers/extend-prototype.helper');
 
-function NotFound(errors = {}) {
-  HttpException.call(this, 404, 'Not Found', errors);
+function NotFound(errors = {}, message = '') {
+  HttpException.call(this, 404, errors, message);
 }
 
 extendPrototype(NotFound, HttpException);

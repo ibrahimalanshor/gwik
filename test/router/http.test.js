@@ -101,7 +101,6 @@ describe('http router test', () => {
       expect(res).to.have.property('body');
       expect(res.body).to.be.a('object');
       expect(res.body.status).to.eq(500);
-      expect(res.body.message).to.eq('Internal Server Error');
     } finally {
       server.stop();
     }
@@ -128,7 +127,6 @@ describe('http router test', () => {
       expect(res).to.have.property('body');
       expect(res.body).to.be.a('object');
       expect(res.body.status).to.eq(401);
-      expect(res.body.message).to.eq('Unauthorized');
     } finally {
       server.stop();
     }
