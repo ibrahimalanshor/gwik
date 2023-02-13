@@ -27,7 +27,7 @@ function createStorage({ field, allowedTypes, getPath, getFilename }) {
 
       cb(null, true);
     } catch (err) {
-      cb(new BadRequestException());
+      cb(new BadRequestException({}, 'validation.file-type-invalid'));
     }
   }
 
